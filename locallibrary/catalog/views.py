@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from catalog.models import Book, Author, BookInstance
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 def index(request):
     """View function for home page of site."""
@@ -11,8 +12,6 @@ def index(request):
 
     # Available books (status = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-
-    num_cats = Book.objects.filter(title__icontains='cat').all().count()
 
     # The 'all()' is implied by default.
     num_authors = Author.objects.count()
@@ -36,7 +35,7 @@ class BookListView(generic.ListView):
     model = Book
     paginate_by = 3
 
-class BookDetailView(generic.DetailView):
+class BookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Book
 
 class AuthorListView(generic.ListView):
@@ -45,3 +44,22 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+    """Generic class-based view listing books on loan to current user."""
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+class LoanedBooksAllListView(PermissionRequiredMixin,generic.ListView):
+    """Generic class-based view listing all books on loan for librarian use."""
+    permission_required = 'catalog.can_mark_returned'
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_all.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
