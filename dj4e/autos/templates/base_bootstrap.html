@@ -16,15 +16,16 @@
       <div class="col-sm-2">
       {% block sidebar %}
         <ul class="sidebar-nav">
+          <li><a href="{% url 'home:home' %}">All Apps Home</a></li>
           <li><a href="{% url 'autos:all' %}">All autos</a></li>
           <li><a href="{% url 'autos:make_list' %}">All makes</a></li>
           <br/>
-        <!-- {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
           <li>User: {{ user.get_username }}</li>
           <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
         {% else %}
           <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-        {% endif %} -->
+        {% endif %}
        </ul>
       {% endblock %}
       </div>

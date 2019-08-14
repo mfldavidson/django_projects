@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 app_name='autos'
 urlpatterns = [
     path('', views.MainView.as_view(), name='all'),
-    path('/create/', views.AutoCreate.as_view(), name='auto_create'),
+    path('create/', views.AutoCreate.as_view(), name='auto_create'),
     path('int:pk>/update/', views.AutoUpdate.as_view(), name='auto_update'),
     path('<int:pk>/delete/', views.AutoDelete.as_view(), name='auto_delete'),
     path('makes/', views.MakeView.as_view(), name='make_list'),
