@@ -66,7 +66,7 @@ ROOT_URLCONF = 'adlist.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['ads/templates', 'home/templates', 'ads/templates/ads'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
