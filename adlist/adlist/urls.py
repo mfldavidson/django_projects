@@ -20,7 +20,7 @@ import ads.urls
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    # path('home/', include('home.urls')),
+    path('home/', include('home.urls')),
     # path('', RedirectView.as_view(url='/home/')),
     # path('ads/', include('ads.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
@@ -28,4 +28,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^oauth/', include('social_django.urls', namespace='social')),
+]
+
+# Serve the favicon
+import os
+from django.views.static import serve
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+urlpatterns += [
+    path('favicon.ico', serve, {
+            'path': 'favicon.ico',
+            'document_root': os.path.join(BASE_DIR, 'home/static'),
+        }
+    ),
 ]
