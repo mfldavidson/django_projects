@@ -16,18 +16,16 @@ Including another URLconf
 from django.contrib import admin, auth
 from django.urls import path, include
 from django.views.generic import RedirectView
-import ads.urls
+from django.conf.urls import url
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
     path('home/', include('home.urls')),
     # path('', RedirectView.as_view(url='/home/')),
     # path('ads/', include('ads.urls')),
-    # path('accounts/', include('django.contrib.auth.urls')),
     path('', include('ads.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    # url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 ]
 
 # Serve the favicon
