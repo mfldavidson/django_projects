@@ -12,6 +12,16 @@ class AdsListView(OwnerListView):
     model = Ad
     template_name = "ad_list.html"
 
+    def get(self, request) :
+        ad_list = Ad.objects.all()
+        favorites = list()
+        if request.user.is_authenticated:
+            # rows = [{'id': 2}]  (A list of rows)
+            rows = request.user.favorite_ads.values('id')
+            favorites = [ row['id'] for row in rows ]
+        ctx = {'ad_list' : ad_list, 'favorites': favorites}
+        return render(request, self.template_name, ctx)
+
 class AdsDetailView(OwnerDetailView):
     model = Ad
     template_name = "ad_detail.html"
@@ -28,11 +38,11 @@ class AdsDetailView(OwnerDetailView):
 #     model = Ad
 #     fields = ['title', 'price', 'text']
 #     template_name = "ad_form.html"
-#     success_url = reverse_lazy('ads')
+#     success_url = reverse_lazy('all_ads')
 
 class AdsCreateView(LoginRequiredMixin, View):
     template = 'ads/ad_form.html'
-    success_url = reverse_lazy('ads')
+    success_url = reverse_lazy('all_ads')
     def get(self, request, pk=None) :
         form = CreateForm()
         ctx = { 'form': form }
@@ -56,11 +66,11 @@ class AdsCreateView(LoginRequiredMixin, View):
 #     model = Ad
 #     fields = ['title', 'price', 'text']
 #     template_name = "ad_form.html"
-#     success_url = reverse_lazy('ads')
+#     success_url = reverse_lazy('all_ads')
 
 class AdsUpdateView(LoginRequiredMixin, View):
     template = 'ads/ad_form.html'
-    success_url = reverse_lazy('ads')
+    success_url = reverse_lazy('all_ads')
     def get(self, request, pk) :
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(instance=ad)
@@ -82,8 +92,8 @@ class AdsUpdateView(LoginRequiredMixin, View):
 
 class AdsDeleteView(OwnerDeleteView):
     model = Ad
-    template_name = "ad_delete.html"
-    success_url = reverse_lazy('ads')
+    template_name = "ads/ad_delete.html"
+    success_url = reverse_lazy('all_ads')
 
 def stream_file(request, pk) :
     ad = get_object_or_404(Ad, id=pk)
@@ -123,3 +133,32 @@ class CommentDeleteView(OwnerDeleteView):
     def get_success_url(self):
         ad = self.object.ad
         return reverse_lazy('ad_detail', args=[ad.id])
+
+# https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AddFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Add PK",pk)
+        a = get_object_or_404(Ad, id=pk)
+        fav = Fav(user=request.user, ad=a)
+        try:
+            fav.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Delete PK",pk)
+        a = get_object_or_404(Ad, id=pk)
+        try:
+            fav = Fav.objects.get(user=request.user, ad=a).delete()
+        except Fav.DoesNotExist as e:
+            pass
+
+        return HttpResponse()

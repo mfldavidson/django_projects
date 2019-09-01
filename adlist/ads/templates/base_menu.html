@@ -9,9 +9,8 @@
     </div>
     <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
     <ul class="nav navbar-nav">
-      {% url 'ads' as ads %}
-      <li {% if request.get_full_path == ads %}class="active"{% endif %}>
-          <a href="{% url 'ads' %}">Ads</a></li>
+      <li {% if request.get_full_path == 'all_ads' %} class="active"{% endif %}>
+          <a href="{% url 'all_ads' %}">Ads</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
@@ -23,12 +22,12 @@
                 <img style="width: 25px;" src="{{ user|gravatar:60 }}"/><b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'logout' %}?next={% url 'ads' %}">Logout</a></li>
+                <li><a href="{% url 'logout' %}?next={% url 'all_ads' %}">Logout</a></li>
             </ul>
         </li>
         {% else %}
         <li>
-        <a href="{% url 'login' %}?next={% url 'ads' %}">Login</a>
+        <a href="{% url 'login' %}?next={% url 'all_ads' %}">Login</a>
         </li>
         {% endif %}
     </ul>
