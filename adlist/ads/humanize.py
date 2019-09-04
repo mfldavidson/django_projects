@@ -1,5 +1,5 @@
 
-# Really simple naturalsize that is missing from django humanize :(
+# Really simple naturalsize that is missing from django humanize courtesy of csev
 def naturalsize(count) :
     fcount = float(count)
     k = 1024

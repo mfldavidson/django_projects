@@ -1,0 +1,15 @@
+{% extends "autos/base_menu.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1>Update Comment</h1>
+
+<p>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Submit">
+    <input type="submit" value="Cancel" onclick="window.location.href='{% url 'auto_detail' %}';return false;">
+  </form>
+</p>
+{% endblock %}

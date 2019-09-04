@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'social_django',
 
     'home.apps.HomeConfig',
-    'ads.apps.AdsConfig'
+    'ads.apps.AdsConfig',
+    'autos.apps.AutosConfig',
 ]
 
 # When we get to crispy forms :)
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'adlist.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['ads/templates', 'home/templates', 'ads/templates/ads'],
+        'DIRS': ['ads/templates', 'home/templates', 'ads/templates/ads', 'autos/templates', 'autos/templates/autos'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
