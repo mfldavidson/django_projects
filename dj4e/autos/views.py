@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from autos.models import Auto, Make
 from autos.forms import MakeForm
 
-class MainView(View) :
+class MainView(LoginRequiredMixin,View) :
     def get(self, request):
         mc = Make.objects.all().count();
         al = Auto.objects.all();
@@ -17,7 +17,7 @@ class MainView(View) :
         ctx = { 'make_count': mc, 'auto_list': al };
         return render(request, 'autos/auto_list.html', ctx)
 
-class MakeView(View) :
+class MakeView(LoginRequiredMixin,View) :
     def get(self, request):
         ml = Make.objects.all();
         ctx = { 'make_list': ml };
