@@ -7,7 +7,7 @@ from autos.models import *
 from ads.util import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 from autos.forms import *
 
-class AutosListView(OwnerListView):
+class AutosListView(LoginRequiredMixin,OwnerListView):
     model = Auto
     template_name = "autos/auto_list.html"
 
@@ -16,7 +16,7 @@ class AutosListView(OwnerListView):
         ctx = {'auto_list' : auto_list}
         return render(request, self.template_name, ctx)
 
-class AutosDetailView(OwnerDetailView):
+class AutosDetailView(LoginRequiredMixin,OwnerDetailView):
     model = Auto
     template_name = "autos/auto_detail.html"
 

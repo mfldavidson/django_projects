@@ -22,7 +22,7 @@ urlpatterns = [
     path('home/', include('home.urls')),
     # path('', RedirectView.as_view(url='/home/')),
     # path('ads/', include('ads.urls')),
-    path('', include('ads.urls')),
+    path('', include('ads.urls', namespace='ads')),
     path('autos/', include('autos.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),

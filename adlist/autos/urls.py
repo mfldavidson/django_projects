@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.AutosListView.as_view(), name='all_autos' ),
     path('auto/<int:pk>/', views.AutosDetailView.as_view(), name='auto_detail'),
-    path('create/', views.AutosCreateView.as_view(), name='auto_create'),
+    path('add/', views.AutosCreateView.as_view(), name='auto_create'),
     path('auto/<int:pk>/update/', views.AutosUpdateView.as_view(), name='auto_update'),
     path('auto/<int:pk>/delete/', views.AutosDeleteView.as_view(), name='auto_delete'),
     path('auto/<int:pk>/comment', views.CommentCreateView.as_view(), name='comment_create'),

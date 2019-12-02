@@ -20,7 +20,7 @@ Auto{% extends "autos/base_menu.html" %}
 {% endif %}
 </p>
 <p>
-<a href="{% url 'auto_create' %}">Create an Auto</a> |
+<a href="{% url 'auto_create' %}">Add an Auto</a> |
 {% if user.is_authenticated %}
 <a href="{% url 'logout' %}?next={% url 'all_autos' %}">Logout</a>
 {% else %}

@@ -42,7 +42,7 @@ class AdsDetailView(OwnerDetailView):
 
 class AdsCreateView(LoginRequiredMixin, View):
     template = 'ads/ad_form.html'
-    success_url = reverse_lazy('all_ads')
+    success_url = reverse_lazy('ads:all_ads')
     def get(self, request, pk=None) :
         form = CreateForm()
         ctx = { 'form': form }
@@ -70,7 +70,7 @@ class AdsCreateView(LoginRequiredMixin, View):
 
 class AdsUpdateView(LoginRequiredMixin, View):
     template = 'ads/ad_form.html'
-    success_url = reverse_lazy('all_ads')
+    success_url = reverse_lazy('ads:all_ads')
     def get(self, request, pk) :
         ad = get_object_or_404(Ad, id=pk, owner=self.request.user)
         form = CreateForm(instance=ad)
@@ -93,7 +93,7 @@ class AdsUpdateView(LoginRequiredMixin, View):
 class AdsDeleteView(OwnerDeleteView):
     model = Ad
     template_name = "ads/ad_delete.html"
-    success_url = reverse_lazy('all_ads')
+    success_url = reverse_lazy('ads:all_ads')
 
 def stream_file(request, pk) :
     ad = get_object_or_404(Ad, id=pk)
@@ -111,7 +111,7 @@ class CommentCreateView(LoginRequiredMixin, View):
 
         comment = Comment(text=request.POST['comment'], owner=request.user, ad=a)
         comment.save()
-        return redirect(reverse_lazy('ad_detail', args=[pk]))
+        return redirect(reverse_lazy('ads:ad_detail', args=[pk]))
 
 class CommentUpdateView(OwnerUpdateView):
     model = Comment
@@ -123,7 +123,7 @@ class CommentUpdateView(OwnerUpdateView):
     # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):
         ad = self.object.ad
-        return reverse_lazy('ad_detail', args=[ad.id])
+        return reverse_lazy('ads:ad_detail', args=[ad.id])
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
@@ -132,7 +132,7 @@ class CommentDeleteView(OwnerDeleteView):
     # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):
         ad = self.object.ad
-        return reverse_lazy('ad_detail', args=[ad.id])
+        return reverse_lazy('ads:ad_detail', args=[ad.id])
 
 # https://stackoverflow.com/questions/16458166/how-to-disable-djangos-csrf-validation
 from django.views.decorators.csrf import csrf_exempt
